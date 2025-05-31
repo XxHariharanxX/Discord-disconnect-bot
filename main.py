@@ -57,3 +57,25 @@ async def timeout_or_disconnect_role_members():
                 print(f"Failed to timeout {member.display_name}: {e}")
 
 bot.run(BOT_TOKEN)
+
+# Create a simple web server just to listen on the port Render requires
+async def handle(request):
+    return web.Response(text="Bot is running!")
+
+async def run_web_server():
+    app = web.Application()
+    app.router.add_get('/', handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', int(os.environ.get('PORT', 10000)))
+    await site.start()
+    print(f"🌐 Web server running on port {os.environ.get('PORT', 10000)}")
+
+async def main():
+    # Start your bot and web server concurrently
+    scheduler.start()
+    await run_web_server()
+    await bot.start(BOT_TOKEN)
+
+if __name__ == "__main__":
+    asyncio.run(main())
