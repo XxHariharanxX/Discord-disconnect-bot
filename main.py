@@ -23,7 +23,7 @@ async def on_ready():
     print(f"Logged in as {bot.user} (ID: {bot.user.id})")
 
     # Schedule the task daily at midnight UTC (adjust hour, minute as needed)
-    scheduler.add_job(timeout_or_disconnect_role_members, "cron", hour=14, minute=40)
+    scheduler.add_job(timeout_or_disconnect_role_members, "cron", hour=15, minute=20)
     scheduler.start()
 
 async def timeout_or_disconnect_role_members():
